@@ -73,25 +73,26 @@ while row:
     row = f.readline().replace('\n', '')
 f.close()
 
-# adicionando 1 no iníncio de todos exemplos para igualar com o W que passará
-# a ter o bies incluso no índice 0
-complement_value_in_exemple = 1
+# bies
+b = -1
+# adicionando bies no início de todos exemplos para igualar com o W que passará
+# a ter o peso do bies incluso no índice 0
 for i in range(len(X)):
-    X[i].insert(0, complement_value_in_exemple)
+    X[i].insert(0, b)
 
 # --------------------------------------------------------------------------
 
 # pesos de conexão ---------------------------------------------------------
 W = []
-# bies
-b = -1
+
 # para cada coluna (feature), adiciono pesos Wi
 for i in range(len(X[0])):
-    # insere o bies no ínice 0 de W
+    # insere o peso do bies no ínice 0 de W
     if i == 0:
-        W.append(b)
+        W.append(0.5)
+    # insere os demais pesos da(s) entrada(s)
     else:
-        W.append(0) # pode ser randomizado (intervalor de -1 até 1, por exemplo)
+        W.append(1) # pode ser randomizado (intervalo de -1 até 1, por exemplo)
 
 # --------------------------------------------------------------------------
 
@@ -107,7 +108,7 @@ for t in range(T):
     # percorre todas as predições (vetor y)
     for n in range(len(y)):
         # calculando a predição do perceptron aplicando a função de ativação
-        yn = 1 if inner_product(W, X[n]) >= 0 else 0
+        yn = 1 if inner_product(W, X[n]) >= 0 else 0 # sign(inner_product(W, X[n])) 
 
         # averiguando se houve erro de classificação para aplicar a correção
         if y[n] != yn:
