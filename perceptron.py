@@ -1,4 +1,5 @@
 import math
+from random import randint
 # from matplotlib import pyplot as plt
 
 
@@ -61,7 +62,7 @@ def score(v1, v2):
 X = []
 y = []
 
-arq_address = './datasets/xor.dat'
+arq_address = './datasets/and.dat'
 f = open(arq_address,"r")
 row = f.readline().replace('\n','')
 while row:
@@ -89,10 +90,10 @@ W = []
 for i in range(len(X[0])):
     # insere o peso do bies no ínice 0 de W
     if i == 0:
-        W.append(0.5)
+        W.append(randint(-10, 10)/10)
     # insere os demais pesos da(s) entrada(s)
     else:
-        W.append(1) # pode ser randomizado (intervalo de -1 até 1, por exemplo)
+        W.append(randint(-10, 10)/10) # pode ser randomizado (intervalo de -1 até 1, por exemplo)
 
 # --------------------------------------------------------------------------
 
@@ -100,7 +101,8 @@ for i in range(len(X[0])):
 # predições treinadas
 y_train = []
 # número de iterações t do treinamento (Épocas)
-T = 1
+T = 10
+neta = 0.2 # peso de ajuste de cada erro cometido
 for t in range(T):
     # guardara as predições em treinamento
     y_training = []
@@ -108,11 +110,12 @@ for t in range(T):
     # percorre todas as predições (vetor y)
     for n in range(len(y)):
         # calculando a predição do perceptron aplicando a função de ativação
-        yn = 1 if inner_product(W, X[n]) >= 0 else 0 # sign(inner_product(W, X[n])) 
+        yn = 1 if inner_product(W, X[n]) >= 0 else 0 # sign(inner_product(W, X[n]))
 
         # averiguando se houve erro de classificação para aplicar a correção
         if y[n] != yn:
-            W = sum(W, product(y[n], X[n]))
+            e = float(y[n]) - float(yn)
+            W = sum(W, product(neta, product(e, X[n])))
 
         y_training.append(yn)
     
